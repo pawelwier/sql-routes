@@ -1,6 +1,8 @@
 const express = require('express')
 const fs = require('fs')
 
+const {getFieldsFromModel} = require('./utils/sequelizeUtils')
+
 const app = express()
 
 app.use(express.json())
@@ -19,6 +21,17 @@ async function crudMiddleware(req, res, next) {
         const data = await response(params)
         res.send(data)
       })
+      if (modelRoutePath === 'get') {
+        const {fields} = require(`./routes/${route}/get`)
+        if (!fields) return
+        for (const fieldSet of fields) {
+          const {name, set} = fieldSet
+          app.get(`/${route}/get/${name}`, async (req, res) => {
+            const data = await getFieldsFromModel(route, set)
+            res.send(data)
+          })
+        }
+      }
     }
   }
   next()
