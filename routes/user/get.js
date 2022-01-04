@@ -1,12 +1,20 @@
-module.exports = {
-  fields: [
+module.exports = [
     {
       name: 'basic',
-      set: ['id', 'firstName'],
+      fields: ['id', 'firstName'],
+      modify: data => [
+        ...data,
+        {
+          firstName: 'karol'
+        }
+      ]
     },
     {
       name: 'names',
-      set: ['firstName','lastName'],
+      fields: ['firstName','lastName'],
     },
-  ]
-}
+    {
+      name: 'when',
+      fields: ['createdAt']
+    }
+]
