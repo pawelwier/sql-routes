@@ -1,7 +1,7 @@
 module.exports = {
   get: [
     {
-      name: 'basic',
+      name: 'all',
       fields: ['id', 'firstName'],
       modify: data => [
         ...data,

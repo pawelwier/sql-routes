@@ -7,12 +7,10 @@ const createRoutesFolder = () => {
     fs.rmdirSync('routes', {recursive: true})
   }
   fs.mkdirSync('routes')
-  // make dynamic
+  // todo: make dynamic
   fs.mkdirSync('./routes/user')
 
 }
-
-
 
 const getMethodContent = () => {
   const methodTypes = ['get', 'post', 'put', 'delete']
