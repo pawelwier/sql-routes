@@ -1,18 +1,7 @@
 const fs = require('fs')
-const config = require('./api-configs/user-config')
 
-const createRoutesFolder = () => {
-  const hasApiFolder = fs.existsSync('routes')
-  if (hasApiFolder) {
-    fs.rmdirSync('routes', {recursive: true})
-  }
-  fs.mkdirSync('routes')
-  // todo: make dynamic
-  fs.mkdirSync('./routes/user')
-
-}
-
-const getMethodContent = () => {
+const getMethodContent = (model) => {
+  const config = require(`./api-configs/${model}-config`)
   const methodTypes = ['get', 'post', 'put', 'delete']
   const methods = []
 
@@ -41,10 +30,25 @@ const getMethodContent = () => {
       `
     }
     text += ']'
-    fs.appendFile(`./routes/user/${method}.js`, text, () => console.log(`${method} file created`))
+    fs.appendFile(`./routes/${model}/${method}.js`, text, () => console.log(`${method} file created`))
     text = ''
   }
 }
 
-createRoutesFolder()
-getMethodContent()
+const createRouteFiles = () => {
+  const hasApiFolder = fs.existsSync('routes')
+  if (hasApiFolder) {
+    fs.rmdirSync('routes', {recursive: true})
+  }
+  fs.mkdirSync('routes')
+  fs.readdir('./db/models', (err, files) => {
+    const modelFiles = files.filter(file => file !== 'index.js')
+    for (const file of modelFiles) {
+      const model = file.replace('.js', '')
+      fs.mkdirSync(`./routes/${model}`)
+      getMethodContent(model)
+    }
+  });
+}
+
+createRouteFiles()

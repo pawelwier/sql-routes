@@ -1,0 +1,3 @@
+- yarn db:migrate
+- yarn start:files
+- yarn start
